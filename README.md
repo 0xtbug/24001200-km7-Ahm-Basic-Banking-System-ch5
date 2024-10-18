@@ -1,12 +1,23 @@
 # Basic Banking System
 
-## Run
+## Migration
+```bash
+npx prisma migrate dev --name init
+```
+### Install
 ```bash
 npx prisma migrate dev --name init
 ```
 ```bash
 npm install
-npm run start
+```
+### Seed the database
+```bash
+npx prisma db seed
+```
+### Run the server
+```bash
+npm start
 ```
 
 ## API Documentation
