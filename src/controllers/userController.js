@@ -160,8 +160,7 @@ exports.getUser = async (req, res) => {
         id: parseInt(userId)
       },
       include: {
-        profile: true,
-        accounts: true
+        profile: true
       }
     });
 
