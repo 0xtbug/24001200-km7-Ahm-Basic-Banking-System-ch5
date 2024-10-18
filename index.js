@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./src/routes/userRoutes");
+const accountRoutes = require("./src/routes/accountRoutes");
 const app = express();
 
 app.use(bodyParser.json());
@@ -8,7 +9,8 @@ app.use(bodyParser.json());
 // User Routes
 app.use("/api/v1/users", userRoutes);
 
-// TODO: Add routes for Accounts endpoints
+// Account Routes
+app.use("/api/v1/accounts", accountRoutes);
 
 // TODO: Add routes for Transactions endpoints
 
