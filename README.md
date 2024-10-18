@@ -2,6 +2,9 @@
 
 ## Run
 ```bash
+npx prisma migrate dev --name init
+```
+```bash
 npm install
 npm run start
 ```
