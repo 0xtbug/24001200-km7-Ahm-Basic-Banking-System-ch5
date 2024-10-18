@@ -8,8 +8,8 @@ exports.createUser = async (req, res) => {
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({
-        statusCode: 400,
+      return res.status(409).json({
+        statusCode: 409,
         message: "User with this email already exists",
       });
     }
