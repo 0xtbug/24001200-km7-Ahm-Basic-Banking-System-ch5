@@ -1,6 +1,5 @@
 const express = require("express");
 const accountController = require("../controllers/accountController");
-const { authenticateToken } = require("../middleware/auth");
 const router = express.Router();
 
 /**
@@ -41,7 +40,7 @@ const router = express.Router();
  *       409:
  *         description: Account number already exists
  */
-router.post("/", authenticateToken, accountController.createAccount);
+router.post("/", accountController.createAccount);
 
 /**
  * @swagger
@@ -73,7 +72,7 @@ router.post("/", authenticateToken, accountController.createAccount);
  *       404:
  *         description: Account not found
  */
-router.put("/:accountId", authenticateToken, accountController.updateAccount);
+router.put("/:accountId", accountController.updateAccount);
 
 /**
  * @swagger
@@ -95,7 +94,7 @@ router.put("/:accountId", authenticateToken, accountController.updateAccount);
  *       404:
  *         description: Account not found
  */
-router.delete("/:accountId", authenticateToken, accountController.deleteAccount);
+router.delete("/:accountId", accountController.deleteAccount);
 
 /**
  * @swagger
@@ -131,7 +130,7 @@ router.delete("/:accountId", authenticateToken, accountController.deleteAccount)
  *             message:
  *               type: string
  */
-router.get("/", authenticateToken, accountController.getAllAccounts);
+router.get("/", accountController.getAllAccounts);
 
 /**
  * @swagger
@@ -153,7 +152,7 @@ router.get("/", authenticateToken, accountController.getAllAccounts);
  *       404:
  *         description: Account not found
  */
-router.get("/:accountId", authenticateToken, accountController.getAccountById);
+router.get("/:accountId", accountController.getAccountById);
 
 /**
  * @swagger
@@ -188,7 +187,7 @@ router.get("/:accountId", authenticateToken, accountController.getAccountById);
  *       404:
  *         description: Account not found
  */
-router.post("/:accountId/deposit", authenticateToken, accountController.depositToAccount);
+router.post("/:accountId/deposit", accountController.depositToAccount);
 
 /**
  * @swagger
@@ -223,6 +222,6 @@ router.post("/:accountId/deposit", authenticateToken, accountController.depositT
  *       404:
  *         description: Account not found
  */
-router.post("/:accountId/withdraw", authenticateToken, accountController.withdrawFromAccount);
+router.post("/:accountId/withdraw", accountController.withdrawFromAccount);
 
 module.exports = router;

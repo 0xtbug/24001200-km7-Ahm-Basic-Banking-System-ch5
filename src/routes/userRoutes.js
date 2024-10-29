@@ -1,6 +1,5 @@
 const express = require("express");
 const userController = require("../controllers/userController");
-const { authenticateToken } = require("../middleware/auth");
 const router = express.Router();
 
 /**
@@ -57,7 +56,7 @@ const router = express.Router();
  *             message:
  *               type: string
  */
-router.post("/", authenticateToken, userController.createUser);
+router.post("/", userController.createUser);
 
 /**
  * @swagger
@@ -112,7 +111,7 @@ router.post("/", authenticateToken, userController.createUser);
  *             message:
  *               type: string
  */
-router.put("/:userId", authenticateToken, userController.updateUser);
+router.put("/:userId", userController.updateUser);
 
 /**
  * @swagger
@@ -146,7 +145,7 @@ router.put("/:userId", authenticateToken, userController.updateUser);
  *             message:
  *               type: string
  */
-router.delete("/:userId", authenticateToken, userController.deleteUser);
+router.delete("/:userId", userController.deleteUser);
 
 /**
  * @swagger
@@ -182,7 +181,7 @@ router.delete("/:userId", authenticateToken, userController.deleteUser);
  *             message:
  *               type: string
  */
-router.get("/", authenticateToken, userController.getAllUsers);
+router.get("/", userController.getAllUsers);
 
 /**
  * @swagger
@@ -216,6 +215,6 @@ router.get("/", authenticateToken, userController.getAllUsers);
  *             message:
  *               type: string
  */
-router.get("/:userId", authenticateToken, userController.getUser);
+router.get("/:userId", userController.getUser);
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const express = require("express");
 const transactionsController = require("../controllers/transactionController");
-const { authenticateToken } = require("../middleware/auth");
 const router = express.Router();
 
 /**
@@ -38,7 +37,7 @@ const router = express.Router();
  *       404:
  *         description: Account not found
  */
-router.post("/", authenticateToken, transactionsController.createTransaction);
+router.post("/", transactionsController.createTransaction);
 
 /**
  * @swagger
@@ -60,7 +59,7 @@ router.post("/", authenticateToken, transactionsController.createTransaction);
  *       404:
  *         description: Transaction not found
  */
-router.delete('/:transactionId', authenticateToken, transactionsController.deleteTransaction);
+router.delete('/:transactionId', transactionsController.deleteTransaction);
 
 /**
  * @swagger
@@ -96,7 +95,7 @@ router.delete('/:transactionId', authenticateToken, transactionsController.delet
  *             message:
  *               type: string
  */
-router.get("/", authenticateToken, transactionsController.getAllTransactions);
+router.get("/", transactionsController.getAllTransactions);
 
 /**
  * @swagger
@@ -118,6 +117,6 @@ router.get("/", authenticateToken, transactionsController.getAllTransactions);
  *       404:
  *         description: Transaction not found
  */
-router.get("/:transactionId", authenticateToken, transactionsController.getTransactionById);
+router.get("/:transactionId", transactionsController.getTransactionById);
 
 module.exports = router;
