@@ -61,7 +61,7 @@ exports.updateUser = async (req, res) => {
     const updateData = {
       name,
       email,
-      password,
+      password: await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS)),
     };
 
     if (profile && existingUser.profile) {
