@@ -1,8 +1,11 @@
+// https://stackoverflow.com/questions/62474575/not-generating-swagger-document-node-js-swaggerjsdoc
+
 const swaggerJsdoc = require('swagger-jsdoc');
 
 const options = {
   definition: {
     swagger: '2.0',
+    schemes: ["http", "https"],
     info: {
       title: 'Banking System API',
       version: '1.0.0',
