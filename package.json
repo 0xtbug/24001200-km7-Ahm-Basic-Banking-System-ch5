@@ -1,19 +1,22 @@
 {
-  "name": "challenge",
+  "name": "challenge-5",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "main": "node index.js",
     "start": "nodemon index.js",
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js",
+    "test": "jest --coverage --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "jest": "^29.7.0",
     "nodemon": "^2.0.22",
-    "prisma": "^5.21.0"
+    "prisma": "^5.21.0",
+    "supertest": "^7.0.0"
   },
   "dependencies": {
     "@prisma/client": "^5.21.0",

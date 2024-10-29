@@ -19,3 +19,6 @@ npm start
 
 ## API Documentation
 https://documenter.getpostman.com/view/14772627/2sAXxWZ8qd
+
+## Swagger Documentation
+http://localhost:3000/api-docs/
