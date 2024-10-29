@@ -94,9 +94,9 @@ exports.login = async (req, res) => {
 exports.authenticate = async (req, res) => {
   res.json({
     statusCode: 200,
-    message: "Token is valid",
-    data: {
-      user: req.user,
-    },
+    message: "User Authorized!",
+    // data: {
+    //   user: req.user,
+    // },
   });
 };
