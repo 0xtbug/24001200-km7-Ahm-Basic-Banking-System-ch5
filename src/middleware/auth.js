@@ -5,12 +5,14 @@ const prisma = new PrismaClient();
 exports.authenticateToken = async (req, res, next) => {
   try {
     const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+    const token = authHeader?.startsWith('Bearer ') 
+      ? authHeader.split(' ')[1] 
+      : authHeader;
 
     if (!token) {
       return res.status(401).json({
         statusCode: 401,
-        message: "Access token not found",
+        message: "Authorization token is required",
       });
     }
 
@@ -23,16 +25,23 @@ exports.authenticateToken = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({
         statusCode: 401,
-        message: "Invalid token",
+        message: "User not found",
       });
     }
 
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({
-      statusCode: 401,
-      message: "Invalid token",
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({
+        statusCode: 401,
+        message: "Invalid or expired token",
+      });
+    }
+
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Authentication failed",
     });
   }
 };
