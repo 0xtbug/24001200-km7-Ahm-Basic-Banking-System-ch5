@@ -114,24 +114,37 @@ exports.deleteAccount = async (req, res) => {
   try {
     const { accountId } = req.params;
 
-    const existingAccount = await prisma.bankAccount.findUnique({
+    // First check if account exists
+    const account = await prisma.bankAccount.findUnique({
       where: { id: parseInt(accountId) },
     });
 
-    if (!existingAccount) {
+    if (!account) {
       return res.status(404).json({
         statusCode: 404,
         message: "Account not found",
       });
     }
 
-    await prisma.bankAccount.delete({
+    // Delete all related transactions first
+    await prisma.transaction.deleteMany({
+      where: {
+        OR: [
+          { sourceAccountId: parseInt(accountId) },
+          { destinationAccountId: parseInt(accountId) },
+        ],
+      },
+    });
+
+    // Then delete the account
+    const deletedAccount = await prisma.bankAccount.delete({
       where: { id: parseInt(accountId) },
     });
 
-    res.json({
+    res.status(200).json({
       statusCode: 200,
-      message: "Account deleted successfully",
+      message: "Account and related transactions deleted successfully",
+      data: deletedAccount,
     });
   } catch (error) {
     res.status(400).json({

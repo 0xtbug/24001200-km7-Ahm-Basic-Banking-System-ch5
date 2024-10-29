@@ -1,20 +1,27 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./src/routes/userRoutes");
 const accountRoutes = require("./src/routes/accountRoutes");
 const transactionRoutes = require("./src/routes/transactionRoutes");
+const authRoutes = require("./src/routes/authRoutes");
+const { authenticateToken } = require("./src/middleware/auth");
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./src/config/swagger');
 const app = express();
 
 app.use(bodyParser.json());
 
-// User Routes
-app.use("/api/v1/users", userRoutes);
+// Auth Routes (public)
+app.use("/api/v1/auth", authRoutes);
 
-// Account Routes
-app.use("/api/v1/accounts", accountRoutes);
+// Protected Routes
+app.use("/api/v1/users", authenticateToken, userRoutes);
+app.use("/api/v1/accounts", authenticateToken, accountRoutes);
+app.use("/api/v1/transactions", authenticateToken, transactionRoutes);
 
-// Transaction Routes
-app.use("/api/v1/transactions", transactionRoutes);
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // Error handler
 // 404
