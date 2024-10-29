@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcrypt");
 const prisma = new PrismaClient();
 
 // Create User
@@ -58,20 +59,28 @@ exports.updateUser = async (req, res) => {
       });
     }
 
-    const updateData = {
-      name,
-      email,
-      password: await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS)),
-    };
+    if (email && email !== existingUser.email) {
+      const emailExists = await prisma.user.findUnique({ where: { email } });
+      if (emailExists) {
+        return res.status(409).json({
+          statusCode: 409,
+          message: "Email already in use",
+        });
+      }
+    }
 
-    if (profile && existingUser.profile) {
-      updateData.profile = {
-        update: profile,
-      };
-    } else if (profile && !existingUser.profile) {
-      updateData.profile = {
-        create: profile,
-      };
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
+    if (password) {
+      updateData.password = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
+    }
+
+    // Handle profile updates
+    if (profile) {
+      updateData.profile = existingUser.profile
+        ? { update: profile }
+        : { create: profile };
     }
 
     const updatedUser = await prisma.user.update({
