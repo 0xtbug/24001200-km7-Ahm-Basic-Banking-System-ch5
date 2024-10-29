@@ -32,19 +32,11 @@ exports.register = async (req, res) => {
       },
     });
 
-    // Generate token
-    const token = jwt.sign(
-      { userId: newUser.id, email: newUser.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "24h" }
-    );
-
     res.status(201).json({
       statusCode: 201,
       message: "User registered successfully",
       data: {
         user: newUser,
-        token,
       },
     });
   } catch (error) {
@@ -60,14 +52,13 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await prisma.user.findUnique({
-      where: { email },
-      include: { profile: true },
+      where: { email }
     });
 
     if (!user) {
-      return res.status(401).json({
-        statusCode: 401,
-        message: "Invalid email or password",
+      return res.status(409).json({
+        statusCode: 409,
+        message: "User not found",
       });
     }
 
@@ -80,7 +71,7 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user.id, email: user.email },
+      { userId: user.id },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
@@ -89,7 +80,6 @@ exports.login = async (req, res) => {
       statusCode: 200,
       message: "Login successful",
       data: {
-        user,
         token,
       },
     });
@@ -109,4 +99,4 @@ exports.authenticate = async (req, res) => {
       user: req.user,
     },
   });
-}; 
+};
